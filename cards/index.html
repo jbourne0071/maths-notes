@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maths Flashcards</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" defer src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 600px; margin: 50px auto; padding: 0 20px; text-align: center; }
+    .nav { text-align: left; margin-bottom: 20px; }
+    .card { border: 2px solid #333; border-radius: 12px; padding: 40px 20px; min-height: 150px; display: flex; flex-direction: column; justify-content: center; cursor: pointer; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.08); margin-bottom: 20px; }
+    .answer { margin-top: 20px; padding-top: 20px; border-top: 1px dashed #ccc; color: #0056b3; display: none; }
+    .controls button { padding: 10px 18px; font-size: 1em; margin: 5px; cursor: pointer; border-radius: 6px; border: 1px solid #333; background: #f4f4f4; }
+    .controls button:hover { background: #e2e2e2; }
+  </style>
+</head>
+<body>
+  <div class="nav"><a href="../index.html">← Back to Notes Index</a></div>
+  <h1>Maths Flashcards</h1>
+  <p id="counter">Card 1 of 3</p>
+
+  <div class="card" onclick="toggleAnswer()">
+    <div id="question" style="font-size: 1.3em; font-weight: bold;"></div>
+    <div id="answer" class="answer" style="font-size: 1.2em;"></div>
+  </div>
+  <p style="font-size: 0.85em; color: #666;">(Click the card to reveal/hide the answer)</p>
+
+  <div class="controls">
+    <button onclick="prevCard()">← Previous</button>
+    <button onclick="shuffleCards()">🔀 Shuffle</button>
+    <button onclick="nextCard()">Next →</button>
+  </div>
+
+  <script>
+    let cards = [
+      { q: "What is the integral of \\(\\frac{1}{x} dx\\)?", a: "\\(\\ln|x| + C\\)" },
+      { q: "State the Quadratic Formula.", a: "\\(x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\\)" },
+      { q: "What is the derivative of \\(\\tan(x)\\)?", a: "\\(\\sec^2(x)\\)" }
+    ];
+
+    let currentIndex = 0;
+
+    function renderCard() {
+      document.getElementById("question").innerHTML = cards[currentIndex].q;
+      const ansEl = document.getElementById("answer");
+      ansEl.innerHTML = cards[currentIndex].a;
+      ansEl.style.display = "none";
+      document.getElementById("counter").innerText = `Card ${currentIndex + 1} of ${cards.length}`;
+      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise();
+    }
+
+    function toggleAnswer() {
+      const ansEl = document.getElementById("answer");
+      ansEl.style.display = ansEl.style.display === "none" ? "block" : "none";
+    }
+
+    function nextCard() {
+      currentIndex = (currentIndex + 1) % cards.length;
+      renderCard();
+    }
+
+    function prevCard() {
+      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+      renderCard();
+    }
+
+    function shuffleCards() {
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+      currentIndex = 0;
+      renderCard();
+    }
+
+    window.addEventListener("DOMContentLoaded", renderCard);
+  </script>
+</body>
+</html>

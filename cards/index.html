@@ -39,12 +39,30 @@
     <button onclick="nextCard()">Next →</button>
   </div>
 
+  <!-- ADD YOUR FLASHCARDS HERE USING NORMAL SINGLE-BACKSLASH LATEX -->
+  <div id="card-bank" style="display: none;">
+    <div class="flashcard">
+      <div class="q">What is the integral of \(\frac{1}{x} dx\)?</div>
+      <div class="a">\(\ln|x| + C\)</div>
+    </div>
+
+    <div class="flashcard">
+      <div class="q">State the Quadratic Formula.</div>
+      <div class="a">\(x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}\)</div>
+    </div>
+
+    <div class="flashcard">
+      <div class="q">What is the derivative of \(\tan(x)\)?</div>
+      <div class="a">\(\sec^2(x)\)</div>
+    </div>
+  </div>
+
   <script>
-    let cards = [
-      { q: "What is the integral of \\(\\frac{1}{x} dx\\)?", a: "\\(\\ln|x| + C\\)" },
-      { q: "State the Quadratic Formula.", a: "\\(x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\\)" },
-      { q: "What is the derivative of \\(\\tan(x)\\)?", a: "\\(\\sec^2(x)\\)" }
-    ];
+    // Automatically reads all .flashcard blocks above into the deck
+    let cards = Array.from(document.querySelectorAll('#card-bank .flashcard')).map(el => ({
+      q: el.querySelector('.q').innerHTML,
+      a: el.querySelector('.a').innerHTML
+    }));
 
     let currentIndex = 0;
 
@@ -83,5 +101,5 @@
 
     window.addEventListener("DOMContentLoaded", renderCard);
   </script>
-</body>
+</body>  
 </html>
